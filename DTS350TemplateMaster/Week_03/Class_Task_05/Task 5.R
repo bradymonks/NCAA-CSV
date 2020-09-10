@@ -43,4 +43,15 @@ write_csv(ipeds_CA_14_15, "ipeds_completers_ca.csv")
 
 install.packages("readxl")
 
+library(readxl)
+
+download.file("https://www.hud.gov/sites/dfiles/Housing/documents/FHA_SFSnapshot_Apr2019.xlsx",
+              "sfsnap.xlsx", mode = "wb")
+
+excel_sheets("sfsnap.xlsx")
+
+purchases <- read_excel("sfsnap.xlsx", sheet = "Purchase Data April 2019")
+
+purchases
+
 

@@ -54,4 +54,11 @@ purchases <- read_excel("sfsnap.xlsx", sheet = "Purchase Data April 2019")
 
 purchases
 
+p <- ggplot(data = iris, mapping = aes(x=Sepal.Width, 
+                                       y = Sepal.Length, 
+                                       color = Species,
+                                       shape = Species),
+            size = 5) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") 
 
