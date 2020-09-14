@@ -85,7 +85,7 @@ head(df_numbers,10)
 
 ## Visualizations
 
-Looking at this plot you can see that the older Americans get the more emphasis they put on Recycling. We need to empasize the importance of recycling to the younger generations.
+Looking at this plot you can see that the older Americans get the more emphasis they put on Recycling. We need to empasize the importance of recycling to the younger generations.On the other end obviously the older generations show excellent awareness on the issue. 
 ```{r}
 CensusUSA <- filter(Census, Country == "USA")
 
