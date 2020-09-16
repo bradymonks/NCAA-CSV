@@ -17,7 +17,7 @@ df_enviroment <- filter(Census,
                           Importance_conserving_water >750|
                           Importance_saving_enery > 750|
                           Importance_owning_computer > 750|
-                          Importance_Internet_access >750)+
+                          Importance_Internet_access >750)
                         
 view(df_enviroment)
 
@@ -84,3 +84,22 @@ df_hand <- summarise(CountCensus1,
                         Intr_avg = mean(Importance_Internet_access,na.rm = TRUE))
 view(df_hand)
 
+CensusUSA <- filter(Census, Country == "USA")
+
+ggplot(data = CensusUSA)+
+    geom_point(mapping = aes(x = Ageyears, y = Importance_recycling_rubbish, shape = Gender))
+
+
+CountCensus <- group_by (Census, Country, Gender)
+
+df_score <- summarise(CountCensus, 
+                        count= n(),
+                        score = mean(Score_in_memory_game),
+                        Poll_avg = mean(Importance_reducing_pollution,na.rm = TRUE),
+                        Recy_avg = mean(Importance_recycling_rubbish,na.rm = TRUE),
+                        Watr_avg = mean(Importance_conserving_water,na.rm = TRUE),
+                        Enrg_avg = mean(Importance_saving_enery,na.rm = TRUE),
+                        Comp_avg = mean(Importance_owning_computer,na.rm = TRUE),
+                        Intr_avg = mean(Importance_Internet_access,na.rm = TRUE))
+df_score <- arrange(df_score, -score)
+view(df_score)
