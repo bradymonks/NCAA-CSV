@@ -2,7 +2,6 @@
 
 library(tidyverse)
 
-
 data1 <- read_csv("life-expectancy-vs-gdp-per-capita.csv")
 
 view(data1)
