@@ -1,6 +1,7 @@
 #Task 6
 
 library(tidyverse)
+library(ggrepel)
 
 data1 <- read_csv("life-expectancy-vs-gdp-per-capita.csv")
 
@@ -19,10 +20,10 @@ data2015 <- data2015 %>%
 data2015v2 <- na.omit(data2015)
 
 view(data2015v2)
-
+library(ggrepel)
 ggplot(data = data2015v2)+
   geom_point(mapping = aes(x = GDP_Per_Capita_USD, y = Life_expectancy, size = Total_Population/10000, color = Continent))+
-  #geom_text(aes(label = Country), data = data2015v2))+
+  geom_text_repel(aes(x = GDP_Per_Capita_USD, y = Life_expectancy, label = ifelse(Total_Population>75000000,as.character(Country),'')))+
   labs(x = "GDP per capita",
        y = "Life expectancy at birth",
        title = "Life expectancy vs. GDP per capita, 2015",
@@ -30,7 +31,7 @@ ggplot(data = data2015v2)+
   guides(size = FALSE)+
   scale_x_continuous(breaks = seq(0,120000, by = 20000),labels=scales::dollar_format())+
   scale_y_continuous(breaks = seq(50 , 80 , by = 5 ))+
-  #scale_color_manual(values = c("purple", "blue","navy","orange","brown","black"))+
+  scale_color_manual(values = c("darkmagenta", "cyan4","slategray4","brown3","salmon3","maroon"))+
   theme(plot.title = element_text(hjust = 0),
         panel.background = element_rect(fill = "white"),
         panel.grid.major.x = element_line(colour = "grey",linetype = 2),
