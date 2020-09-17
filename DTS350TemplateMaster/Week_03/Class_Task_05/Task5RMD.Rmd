@@ -20,7 +20,7 @@ I learned a lot about how to customize graphs to your own liking that will creat
 
 
 
-```{r pressure, echo=FALSE}
+```{r , echo=FALSE}
 library(tidyverse)
 nba<-read_csv("historical_RAPTOR_by_player.csv")
 nba
