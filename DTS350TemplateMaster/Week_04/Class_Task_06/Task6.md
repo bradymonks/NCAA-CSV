@@ -19,7 +19,7 @@ I chose a plot that compared the GDP Per Capita to the Life Expectancy at birth.
 ```
 
 ```
-## -- Attaching packages --------- tidyverse 1.3.0 --
+## -- Attaching packages ---------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
@@ -34,9 +34,13 @@ I chose a plot that compared the GDP Per Capita to the Life Expectancy at birth.
 ```
 
 ```
-## -- Conflicts ------------ tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
+```
+
+```
+## Warning: package 'ggrepel' was built under R version 3.6.3
 ```
 
 ```
