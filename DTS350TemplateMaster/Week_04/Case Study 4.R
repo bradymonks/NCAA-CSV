@@ -37,6 +37,8 @@ flights2 <- filter(flightsworst,
 library(ggrepel)
 
 ggplot(data = flights2)+
-    geom_point(mapping = aes(x = reorder(dest, mean), y = mean))+
-    geom_text_repel(aes(x = dest, y = mean, label = dest))
+  geom_point(mapping = aes(x = reorder(dest, mean), y = mean))+
+  geom_text_repel(aes(x = dest, y = mean, label = dest))+
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
 
