@@ -37,17 +37,18 @@ ggplot(data = susdata1)+
 ![](Task8_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
 ```r
-#gldata <- read_csv("game_logs.csv")
+gldata <- read_csv("game_logs.csv")
+
+gldata1 <- group_by(gldata, winning_pitcher_name) %>%
+  count(winning_pitcher_name, sort = TRUE) %>%
+  filter(n < 30000, n > 230)
 
 
-#gldata1 <- group_by(gldata, winning_pitcher_name) %>%
-#  count(winning_pitcher_name, sort = TRUE) %>%
-#  filter(n < 30000, n > 230)
-
-
-#ggplot(data = gldata1) +
-#    geom_col(mapping = aes(x = winning_pitcher_name, y = #n, fill = winning_pitcher_name))
+ggplot(data = gldata1) +
+    geom_col(mapping = aes(x = winning_pitcher_name, y =n, fill = winning_pitcher_name))
 ```
+
+![](Task8_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
 
 ## Limitations
 
