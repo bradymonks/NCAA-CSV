@@ -6,13 +6,11 @@ output:
   html_document:
     keep_md: true  
 ---
-install.packages("knitr")
-library(knitr)
 
+##Visual 1
 
+! [Alt text] (C:\Users\Ready For Sale\Documents\R\MonksB\DTS350TemplateMaster\Week_01\history-of-football-teams.png)
 
-#Visual 1
-knitr::include_graphics("history-of-football-teams.png")
 
 https://blog.hubspot.com/marketing/great-data-visualization-examples
  The visual is #4
