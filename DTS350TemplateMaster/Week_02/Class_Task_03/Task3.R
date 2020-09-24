@@ -48,12 +48,24 @@ new3 <- new1 %>%
 view(new3)  
 
 
-##Questions
-##What are the average ages for athletes retiring among three
-##major sports (NFL, NBA, MLB)?
-##Do tree heights differ among different regions in the United
-##states (6 tree species, 6 regions)?
-##Does restaurant popularity(sales) differ among different regions in
-##the U.S. (6 regions(facet), up to 30 restaurants)
-##What is the average home run distance at every major league stadium
-##over the last 5-10 years?
+## Questions
+## What are the average ages for athletes retiring among three
+## major sports (NFL, NBA, MLB)?
+# Feedback
+#  This would include a lot of data and could be used to create some intersting visuals,
+#  One thing you could go off of is, say a company like Dick's, which sport and players would they
+#  want to focus on if they wanted to keep their inventory the same for the longest amount of time.
+## Do tree heights differ among different regions in the United
+## states (6 tree species, 6 regions)?
+# Feedback
+#  This is an interesting inquiry. One thing you could do with this is create a map and shade in the regions
+#  fron shortest to tallest and even perform an ANOVA to see if there is even any statistical difference.
+## Does restaurant popularity(sales) differ among different regions in
+## the U.S. (6 regions(facet), up to 30 restaurants)
+# Feedback
+#  Same thing as the last question, except you can dive deeper since you now can break it down further into restaurants.
+## What is the average home run distance at every major league stadium
+## over the last 5-10 years?
+# Feedback
+# This is more of a simple question that might be hard to find data on. But would be fairly simple on creating visuals. It
+# would be cool if you were able to map out every stadium. 
