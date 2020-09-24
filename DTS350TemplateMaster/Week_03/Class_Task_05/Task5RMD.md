@@ -5,11 +5,12 @@ date: "9/10/2020"
 output: 
   html_document:
     keep_md: TRUE
+    code_folding: hide
 ---
 
 
-
 ## What I learned
+
 I learned a lot about how to customize graphs to your own liking that will create the most self-explanatory graphs. One thing I think will be difficult is knowing which features to use at the right time. 
 
 
@@ -19,50 +20,10 @@ I learned a lot about how to customize graphs to your own liking that will creat
 
 
 
-```
-## Warning: package 'tidyverse' was built under R version 3.6.3
-```
-
-```
-## -- Attaching packages ----------------------- tidyverse 1.3.0 --
-```
-
-```
-## v ggplot2 3.3.2     v purrr   0.3.3
-## v tibble  2.1.3     v dplyr   0.8.4
-## v tidyr   1.0.2     v stringr 1.4.0
-## v readr   1.3.1     v forcats 0.4.0
-```
-
-```
-## Warning: package 'ggplot2' was built under R version 3.6.3
-```
-
-```
-## -- Conflicts -------------------------- tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```
-## Parsed with column specification:
-## cols(
-##   player_name = col_character(),
-##   player_id = col_character(),
-##   season = col_double(),
-##   poss = col_double(),
-##   mp = col_double(),
-##   raptor_offense = col_double(),
-##   raptor_defense = col_double(),
-##   raptor_total = col_double(),
-##   war_total = col_double(),
-##   war_reg_season = col_double(),
-##   war_playoffs = col_double(),
-##   predator_offense = col_double(),
-##   predator_defense = col_double(),
-##   predator_total = col_double(),
-##   pace_impact = col_double()
-## )
+```r
+library(tidyverse)
+nba<-read_csv("historical_RAPTOR_by_player.csv")
+nba
 ```
 
 ```
@@ -83,6 +44,14 @@ I learned a lot about how to customize graphs to your own liking that will creat
 ## #   war_total <dbl>, war_reg_season <dbl>, war_playoffs <dbl>,
 ## #   predator_offense <dbl>, predator_defense <dbl>, predator_total <dbl>,
 ## #   pace_impact <dbl>
+```
+
+## Manipulations
+
+
+```r
+nbatop <- filter(nba, raptor_total > 20)
+nbatop
 ```
 
 ```
@@ -109,6 +78,19 @@ I learned a lot about how to customize graphs to your own liking that will creat
 ## #   predator_defense <dbl>, predator_total <dbl>, pace_impact <dbl>
 ```
 
-![](Task5RMD_files/figure-html/pressure-1.png)<!-- -->
+## Plot
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```r
+ggplot(nbatop)+
+    geom_point(mapping = aes(x = raptor_offense, y = raptor_defense, color = player_name))
+```
+
+![](Task5RMD_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+## Export
+
+
+```r
+write_csv(nbatop, "nbatop.csv")
+```

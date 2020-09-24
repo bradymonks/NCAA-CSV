@@ -5,10 +5,12 @@ date: "9/10/2020"
 output: 
   html_document:
     keep_md: TRUE
+    code_folding: hide
 ---
 
 
 ## What I learned
+
 I learned a lot about how to customize graphs to your own liking that will create the most self-explanatory graphs. One thing I think will be difficult is knowing which features to use at the right time. 
 
 
@@ -17,14 +19,29 @@ I learned a lot about how to customize graphs to your own liking that will creat
 
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 nba<-read_csv("historical_RAPTOR_by_player.csv")
 nba
+
+```
+
+## Manipulations
+
+```{r message=FALSE, warning=FALSE }
 nbatop <- filter(nba, raptor_total > 20)
 nbatop
+```
+
+## Plot
+
+```{r message=FALSE, warning=FALSE}
 ggplot(nbatop)+
     geom_point(mapping = aes(x = raptor_offense, y = raptor_defense, color = player_name))
+```
 
+## Export
+
+```{r message=FALSE, warning=FALSE}
 write_csv(nbatop, "nbatop.csv")
 ```
