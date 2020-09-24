@@ -7,9 +7,6 @@ output:
     keep_md: TRUE
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ## What I learned
 I learned a lot about how to customize graphs to your own liking that will create the most self-explanatory graphs. One thing I think will be difficult is knowing which features to use at the right time. 
@@ -20,7 +17,7 @@ I learned a lot about how to customize graphs to your own liking that will creat
 
 
 
-```{r , echo=FALSE}
+```{r}
 library(tidyverse)
 nba<-read_csv("historical_RAPTOR_by_player.csv")
 nba
@@ -31,5 +28,3 @@ ggplot(nbatop)+
 
 write_csv(nbatop, "nbatop.csv")
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
