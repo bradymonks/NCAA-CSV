@@ -62,10 +62,9 @@ My second graph took a data set that was filtered out to people over 45 and deat
 ```r
 accident <- filter(data, intent == "Accidental")
 
-accident$month <- as.character(accident$month)
-
 ggplot(accident)+
-  geom_bar(mapping = aes(x = month, fill = race))
+  geom_bar(mapping = aes(x = month, fill = race))+
+  scale_x_continuous(breaks = 1:12)
 ```
 
 ![](Case-Study-5_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
