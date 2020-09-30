@@ -18,33 +18,27 @@ ggplot(data, aes(x = intent,  y = age))+
   geom_violin()+
   facet_grid(vars(sex), vars(race))
 
-data1 <- group_by(data, year, month, intent, race, sex) %>%
-  count(year, month, intent, race, sex, sort = TRUE)
 
-
-homicide <- filter( data, intent == "Homicide", age > 30)
+homicide <- filter( data, intent == "Homicide", age > 25, sex == 'M')
 
 ggplot(homicide)+
-  geom_bar(mapping = aes(x= race, fill = sex), position = 'dodge')+
+  geom_bar(mapping = aes(x= race, fill = race), position = 'dodge')+
+  theme(axis.text.x = element_blank())+
   facet_wrap(~month)
 # 7, 8, 12
 
 old_suicide <- filter (data, age > 45, intent == "Suicide")
 
-oldsuicide <- group_by(data, age, sex, race,month) %>%
-  count(sex, age, race,month, sort = TRUE) %>%
-  filter ( age > 45)
-
-oldsuicide
-
 ggplot(oldsuicide)+
-  geom_bar(mapping = aes(x= race, fill = sex), position = 'dodge')+
+  geom_bar(mapping = aes(x= race, fill = race, color = sex), position = 'dodge')+
+  theme(axis.text.x = element_blank())+
   facet_wrap(~month)
-
 
  # 5, 7, 8
 
 accident <- filter(data, intent == "Accidental")
+
+#accident$month <- as.character(accident$month)
 
 ggplot(accident)+
   geom_bar(mapping = aes(x = month, fill = race))
