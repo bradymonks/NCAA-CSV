@@ -49,3 +49,8 @@ ggplot(data = dffh_1)+
 ```
 
 ![](Task-11_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
+
+
+## Findings
+
+Over the years, all over the world, expenditures have been going up and child mortality rate has been going down.
