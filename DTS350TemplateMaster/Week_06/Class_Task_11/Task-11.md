@@ -1,0 +1,51 @@
+---
+title: "Task 11"
+author: "Brady Monks"
+date: "10/5/2020"
+output: 
+  html_document:
+    keep_md: true
+    code_folding: hide
+---
+
+
+```r
+library(tidyverse)
+
+dffh <- ourworldindata::financing_healthcare
+
+
+view(dffh)
+
+dffh_1 <- group_by(dffh, continent,country, year) %>%
+            select(year, continent,country, health_exp_total, child_mort) %>%
+            summarise( 
+                  exp_mean = mean( health_exp_total, na.rm = TRUE),
+                  mort_mean = mean( child_mort, na.rm = TRUE))
+
+dffh_1 <- na.omit(dffh_1)
+
+ggplot(data = dffh_1)+
+  geom_line(mapping = aes(group = country,x = year, y = exp_mean, color = continent))+
+  facet_wrap(~continent)+
+  labs(x = "Year",
+       y = "Expenditure",
+       color = "Continent",
+       title = "Average Expenditure over the Years for each Country/Continent"
+       )
+```
+
+![](Task-11_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+```r
+ggplot(data = dffh_1)+
+  geom_line(mapping = aes(group = country,x = year, y = mort_mean, color = continent))+
+  facet_wrap(~continent)+
+  labs(x = "Year",
+       y = "Child Mortality Rate",
+       color = "Continent",
+       title = "Average Child Mortality over the Years for each Country/Continent"
+  )
+```
+
+![](Task-11_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
