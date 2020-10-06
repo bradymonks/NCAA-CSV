@@ -41,7 +41,6 @@ ggplot(data = new_faithful, mapping = aes(x = eruptions, y = waiting))+
 
 # Task
 library(tidyverse)
-devtools::install_github("drsimonj/ourworldindata", force = TRUE)
 
 dffh <- ourworldindata::financing_healthcare
 
@@ -49,8 +48,8 @@ dffh <- ourworldindata::financing_healthcare
 
 view(dffh)
 
-dffh_1 <- group_by(dffh, continent, year) %>%
-            select(year, continent, health_exp_total, child_mort) %>%
+dffh_1 <- group_by(dffh, continent,country, year) %>%
+            select(year, continent,country, health_exp_total, child_mort) %>%
             summarise( 
                   exp_mean = mean( health_exp_total, na.rm = TRUE),
                   mort_mean = mean( child_mort, na.rm = TRUE))
@@ -59,10 +58,21 @@ dffh_1 <- na.omit(dffh_1)
 
 view(dffh_1)
 
+
 ggplot(data = dffh_1)+
-  geom_line(mapping = aes(x = year, y = mort_mean, color = "Mortality"), continent = "Asia")+
-  geom_line(mapping = aes(x = year, y = exp_mean, color = "Expenditure"), continent = "Asia")+
-  #facet_wrap(~continent)+
-  labs
+  geom_line(mapping = aes(group = country,x = year, y = exp_mean, color = continent))+
+  facet_wrap(~continent)+
+  labs(x = "Year",
+       y = "Expenditure",
+       color = "Continent",
+       title = "Average Expenditure over the Years for each Country/Continent"
+       )
 
-
+ggplot(data = dffh_1)+
+  geom_line(mapping = aes(group = country,x = year, y = mort_mean, color = continent))+
+  facet_wrap(~continent)+
+  labs(x = "Year",
+       y = "Child Mortality Rate",
+       color = "Continent",
+       title = "Average Child Mortality over the Years for each Country/Continent"
+  )
