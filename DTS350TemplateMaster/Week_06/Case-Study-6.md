@@ -187,6 +187,31 @@ ggplot(data = dia_type)+
 
 ![](Case-Study-6_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
+## Price by Type
+
+
+```r
+dia_typ1 <- diamonds %>%
+  select (carat, price) %>%
+    mutate(
+        size = case_when(
+            carat <= 0.4 ~ "Very Small",
+            carat < 1.04 ~ "Normal",
+            carat >= 1.04 ~ "Very Large"
+        )
+    ) %>%
+  filter(size != "Normal")
+
+ggplot(data = dia_typ1)+
+  geom_violin(mapping = aes(x = size, y = price, fill = size))+
+  theme_bw()+
+  labs(x = "Size",
+       y = "Price",
+       title = "Price by Size")
+```
+
+![](Case-Study-6_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
 
 ## Combined Distribution of Cut, Carat, and Price
 
@@ -199,6 +224,6 @@ ggplot(data = diamonds)+
        color = "Cut")
 ```
 
-![](Case-Study-6_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](Case-Study-6_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 

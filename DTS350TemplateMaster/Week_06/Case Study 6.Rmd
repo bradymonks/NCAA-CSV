@@ -160,6 +160,31 @@ ggplot(data = dia_type)+
 
 ```
 
+## Price by Type
+
+``` {r message=FALSE, warning=FALSE}
+
+dia_typ1 <- diamonds %>%
+  select (carat, price) %>%
+    mutate(
+        size = case_when(
+            carat <= 0.4 ~ "Very Small",
+            carat < 1.04 ~ "Normal",
+            carat >= 1.04 ~ "Very Large"
+        )
+    ) %>%
+  filter(size != "Normal")
+
+ggplot(data = dia_typ1)+
+  geom_violin(mapping = aes(x = size, y = price, fill = size))+
+  theme_bw()+
+  labs(x = "Size",
+       y = "Price",
+       title = "Price by Size")
+  
+
+```
+
 
 ## Combined Distribution of Cut, Carat, and Price
 
