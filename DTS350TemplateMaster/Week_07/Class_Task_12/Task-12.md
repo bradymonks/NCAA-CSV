@@ -27,7 +27,10 @@ messy_df <- messy_data_del %>%
   na.omit()
 
 ggplot(data = messy_df)+
-  geom_bar(mapping = aes(x = Grades, fill = Grades))
+  geom_bar(mapping = aes(x = Grades, fill = Grades))+
+  labs( x = "Grades",
+        y = "Count",
+        title = "Grades Counted Up")
 ```
 
 ![](Task-12_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
