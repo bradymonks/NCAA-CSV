@@ -25,6 +25,8 @@ ggplot(data = diamonds)+
         title = "Length v. Depth")
 
 
+
+
 dia1 <- group_by(diamonds, clarity) %>%
           summarise(mean = mean(price))
 
@@ -88,9 +90,6 @@ length <- ggplot(data = dia4)+
 
 
 
-dia3
-
-
 dia5 <- group_by(diamonds, z) %>%
   summarise(mean = mean(price))
 
@@ -127,8 +126,7 @@ width
 depth
 table
 
-dia_type <- diamonds %>%
-  select(carat, price) %>%
+dia_type <- select(diamonds, carat, price) %>%
     mutate(
       type = case_when(
         price < 4000 ~ "<$4000",
@@ -138,9 +136,19 @@ dia_type <- diamonds %>%
       )
     )
 
-dia_type_sum <- group_by()
 
 ggplot(data = dia_type)+
-  geom_point(mapping = aes(x = price, y = carat, color = type))+
-  facet_wrap(~type)
+  geom_violin(mapping = aes(x = price, y = carat, fill = type))+
+  scale_x_continuous(breaks = c(2000, 6000, 10000, 14000))+
+  labs(x = "Price",
+       y = "Carat",
+       fill = "Type")
+
+
+ggplot(data = diamonds)+
+  geom_point(mapping = aes(x = carat, y = price, color = cut))+
+  labs(x = "Carat",
+       y = "Price",
+       color = "Cut")
+
 
