@@ -63,7 +63,9 @@ clean_wisc_height <- heightsav %>%
           mutate(birth_year = DOBY + 1900) %>%
           select( -DOBY, -RT216F, -RT216I) %>%
           mutate(height.cm = height.in*2.54) %>%
-          add_column(study = "Wisconsin")
+          add_column(study = "Wisconsin") %>%
+          select(birth_year,height.cm,height.in,study)
+  
   
 clean_wisc_height
 
@@ -74,7 +76,8 @@ clean_BLS_height <- heightscsv %>%
               add_column(study = "BLS") %>%
               mutate(height.in = height) %>%
               select(-height) %>%
-              mutate(height.cm = height.in*2.54)
+              mutate(height.cm = height.in*2.54)%>%
+  select(birth_year,height.cm,height.in,study)
 
 clean_BLS_height              
 
@@ -83,7 +86,8 @@ clean_SE_height <- heightSE %>%
           rename(birth_year = "SJ") %>%
           rename(height.cm = "CMETER") %>%
           mutate(height.in = height.cm/2.54)%>%
-          add_column(study = "Southeast")
+          add_column(study = "Southeast")%>%
+  select(birth_year,height.cm,height.in,study)
   
 clean_SE_height
 
@@ -93,7 +97,8 @@ clean_German_height <- germanheight %>%
         rename(birth_year = "bdec") %>%
         rename(height.cm = "height") %>%
         mutate(height.in = height.cm/2.54) %>%
-        add_column(study = "German Males in Bavaria")
+        add_column(study = "German Males in Bavaria")%>%
+  select(birth_year,height.cm,height.in,study)
 
 clean_German_height
 
@@ -103,13 +108,10 @@ clean_Prison_height <- germanprison %>%
   rename(birth_year = "bdec") %>%
   rename(height.cm = "height") %>%
   mutate(height.in = height.cm/2.54) %>%
-  add_column(study = "German Prison")
+  add_column(study = "German Prison")%>%
+  select(birth_year,height.cm,height.in,study)
 
 clean_Prison_height
-
-colnames(householdsav)
-
-view(householdsav)
 
 #clean_Wisc_household <- householdsav %>%
 #  select(doby, RT216F, RT216I)%>%
@@ -122,3 +124,7 @@ view(householdsav)
 
 new_data <- bind_rows(clean_BLS_height,clean_German_height,clean_Prison_height,clean_SE_height,clean_wisc_height)   
 new_data    
+
+
+ggplot( data = new_data) +
+  geom_point(mapping = aes(x = birth_year, y = height.cm, color = study))
