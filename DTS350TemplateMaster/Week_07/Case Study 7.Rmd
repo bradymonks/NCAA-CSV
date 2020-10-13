@@ -54,9 +54,9 @@ householdsav
 
 ```
 
-Tubingen Data
+## Tubingen Data
 
-``` {r message=FALSE,warning=FALSE}
+``` {r message=FALSE, warning=FALSE}
 
 Tubheighty <- Tubheight %>%
   pivot_longer(c(`1800`:`2011`), names_to = "year_decade", values_to = "height.cm") %>%
@@ -69,6 +69,8 @@ Tubheighty <- Tubheight %>%
 
   
 Tubheighty <- Tubheighty[order(Tubheighty$year_decade),]
+
+head(Tubheighty)
 
 write.csv(Tubheighty,"Tubheighty.csv")
 

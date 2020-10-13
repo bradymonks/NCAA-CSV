@@ -233,7 +233,7 @@ householdsav
 ## #   RD3YP_E <dbl+lbl>, RD4P_E <dbl+lbl>, ...
 ```
 
-Tubingen Data
+## Tubingen Data
 
 
 ```r
@@ -249,6 +249,22 @@ Tubheighty <- Tubheight %>%
   
 Tubheighty <- Tubheighty[order(Tubheighty$year_decade),]
 
+head(Tubheighty)
+```
+
+```
+## # A tibble: 6 x 8
+##    Code country             century decade year  height.cm year_decade height.in
+##   <dbl> <chr>               <chr>   <chr>  <chr>     <dbl> <chr>           <dbl>
+## 1    56 Belgium             18      1      0          163. 1810             64.2
+## 2   280 Federal Republic o~ 18      1      0          168. 1810             66.1
+## 3   250 France              18      1      0          164. 1810             64.5
+## 4   276 Germany             18      1      0          168. 1810             66.1
+## 5   528 Netherlands         18      1      0          166  1810             65.4
+## 6   246 Finland             18      1      0          172. 1810             67.7
+```
+
+```r
 write.csv(Tubheighty,"Tubheighty.csv")
 ```
 
