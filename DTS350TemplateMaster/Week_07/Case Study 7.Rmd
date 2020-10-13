@@ -1,3 +1,17 @@
+---
+title: "Case Study 7"
+author: "Brady Monks"
+date: "10/13/2020"
+output: 
+  html_document:
+    keep_md: TRUE
+    code_folding: hide
+---
+
+## Loading Data In
+
+```{r message=FALSE,warning=FALSE}
+
 # Case Study 7
 
 library(tidyverse)
@@ -38,9 +52,11 @@ download("http://www.ssc.wisc.edu/nsfh/wave3/NSFH3%20Apr%202005%20release/nsfh3m
 householdsav <- read_sav(householdsav)
 householdsav
 
+```
 
-view(Tubheight)
+Tubingen Data
 
+``` {r message=FALSE,warning=FALSE}
 
 Tubheighty <- Tubheight %>%
   pivot_longer(c(`1800`:`2011`), names_to = "year_decade", values_to = "height.cm") %>%
@@ -54,8 +70,13 @@ Tubheighty <- Tubheight %>%
   
 Tubheighty <- Tubheighty[order(Tubheighty$year_decade),]
 
-view(Tubheighty)
+write.csv(Tubheighty,"Tubheighty.csv")
 
+```
+
+## Cleaning Data Sets
+
+``` {r message=FALSE,warning=FALSE}
 
 clean_wisc_height <- heightsav %>%
           select(DOBY, RT216F, RT216I)%>%
@@ -63,9 +84,11 @@ clean_wisc_height <- heightsav %>%
           mutate(birth_year = DOBY + 1900) %>%
           select( -DOBY, -RT216F, -RT216I) %>%
           mutate(height.cm = height.in*2.54) %>%
-          add_column(study = "Wisconsin")
+          add_column(study = "Wisconsin") %>%
+          select(birth_year,height.cm,height.in,study)
   
-clean_wisc_height
+  
+head(clean_wisc_height)
 
 
 clean_BLS_height <- heightscsv %>%
@@ -74,18 +97,20 @@ clean_BLS_height <- heightscsv %>%
               add_column(study = "BLS") %>%
               mutate(height.in = height) %>%
               select(-height) %>%
-              mutate(height.cm = height.in*2.54)
+              mutate(height.cm = height.in*2.54)%>%
+  select(birth_year,height.cm,height.in,study)
 
-clean_BLS_height              
+head(clean_BLS_height)              
 
 clean_SE_height <- heightSE %>%
           select(SJ, CMETER) %>%
           rename(birth_year = "SJ") %>%
           rename(height.cm = "CMETER") %>%
           mutate(height.in = height.cm/2.54)%>%
-          add_column(study = "Southeast")
+          add_column(study = "Southeast")%>%
+  select(birth_year,height.cm,height.in,study)
   
-clean_SE_height
+head(clean_SE_height)
 
 
 clean_German_height <- germanheight %>%
@@ -93,9 +118,10 @@ clean_German_height <- germanheight %>%
         rename(birth_year = "bdec") %>%
         rename(height.cm = "height") %>%
         mutate(height.in = height.cm/2.54) %>%
-        add_column(study = "German Males in Bavaria")
+        add_column(study = "German Males in Bavaria")%>%
+  select(birth_year,height.cm,height.in,study)
 
-clean_German_height
+head(clean_German_height)
 
 
 clean_Prison_height <- germanprison %>%
@@ -103,13 +129,10 @@ clean_Prison_height <- germanprison %>%
   rename(birth_year = "bdec") %>%
   rename(height.cm = "height") %>%
   mutate(height.in = height.cm/2.54) %>%
-  add_column(study = "German Prison")
+  add_column(study = "German Prison")%>%
+  select(birth_year,height.cm,height.in,study)
 
-clean_Prison_height
-
-colnames(householdsav)
-
-view(householdsav)
+head(clean_Prison_height)
 
 #clean_Wisc_household <- householdsav %>%
 #  select(doby, RT216F, RT216I)%>%
@@ -122,3 +145,49 @@ view(householdsav)
 
 new_data <- bind_rows(clean_BLS_height,clean_German_height,clean_Prison_height,clean_SE_height,clean_wisc_height)   
 new_data    
+
+write.csv(new_data,"new_data.csv")
+
+```
+
+## Plot
+
+``` {r message=FALSE, warning=FALSE}
+
+germany <- Tubheighty %>% 
+  filter(`country` == "Germany")
+
+ggplot() +
+  geom_point(data = Tubheighty, mapping = aes(x = year_decade, y = height.cm), color = 'grey') +
+  geom_point(data = germany, mapping = aes(x = year_decade, y = height.cm), color = 'maroon')+
+  labs(x = "Birth Year",
+       y = "Height (cm)",
+       title = "Height in Germany")+
+  theme_bw()
+
+
+ggplot( data = new_data) +
+  geom_point(mapping = aes(x = birth_year, y = height.cm, color = study)) +
+  geom_smooth(mapping = aes(x = birth_year, y = height.cm))+
+  labs(x = "Birth Year",
+       y = "Height (cm)",
+       title = "All Data")
+
+wisc_data <- new_data %>% 
+  filter(study == 'Wisconsin')
+ggplot(data = wisc_data) +
+  geom_point(mapping = aes(x = birth_year, y = height.cm, color = height.in)) +
+  geom_smooth(mapping = aes(x = birth_year, y = height.cm)) +
+  theme_bw()+
+  labs(x = "Birth Year",
+       y = "Height (cm)",
+       title = "Wisconsin Data")
+
+
+
+```
+
+ ## Summary
+ 
+ From the Tubingen data you can see there is a slight decline in height from 1810 to 1850, however since then there has been a steady incline to this day. From the all data graph, you can see there isn't much variation throughout history. It generally hovers around 170ish. The Wisconsin data set had the biggest range of data, so I looked at that and, as like the others, there was little to no variation whatsoever. 
+
