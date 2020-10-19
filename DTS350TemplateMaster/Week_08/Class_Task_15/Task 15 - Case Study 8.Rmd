@@ -124,7 +124,7 @@ MO_Player_college_data <- colleges %>%
                 left_join(playerinfo, by = "playerID") %>%
                 filter(state == "MO") %>%
                 left_join(salary_data, by = "playerID") %>%
-                select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary)%>%
+                select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
                 na.omit()
 
 Single_player_college <- MO_Player_college_data %>%
@@ -144,7 +144,7 @@ Salary_by_college <- Salary_by_college[order(Salary_by_college$salary),]
 
 
 ggplot(data = Salary_by_college) +
-    geom_col(mapping = aes(x = reorder(name_full,salary), y = salary, fill = name_full))+
+    geom_col(mapping = aes(x = reorder(name_full,salary), y = salary))+
     theme_bw() +
     labs(x = "College",
          y = "Average Yearly Salary * 1 Mil",
@@ -153,7 +153,24 @@ ggplot(data = Salary_by_college) +
     theme(
       legend.position = "none"
     )+
-    coord_flip()
+    coord_flip()+
+    scale_colour_manual(values = c("University of Missouri Columbia" = "black",
+                                 "Crowder College" = "gold",
+                                 "Culver-Stockton College" = "gold",
+                                 "East Central College" = "gold",
+                                 "Jefferson College" = "gold",
+                                 "Longview Community College" = "gold",
+                                 "Maple Woods Community College" = "gold",
+                                 "Missouri State University" = "gold",
+                                 "Missouri Valley College" = "gold",
+                                 "Northwest Missouri State University" = "gold",
+                                 "Southeast Missouri State Universtiy" = "gold",
+                                 "St. Louis Community College, Forest Park Campus" = "gold",
+                                 "St. Louis Community College, Meramec Campus" = "gold",
+                                 "Three Rivers Community College" = "gold",
+                                 "Truman State University" = "gold",
+                                 "University of Central Missouri" = "gold"
+                                 ))
 
 
 
@@ -169,17 +186,80 @@ I inflated the salaries using an inflation calculator online and from there, I a
 ``` {r message=FALSE, warning=FALSE}
 
 ggplot(data = Single_player_college)+
-    geom_bar(mapping = aes(x = name_full, fill = name_full), position = 'dodge')+
+    geom_bar(mapping = aes(x = name_full), position = 'dodge')+
     labs( x = "College",
           y = "Count",
-          title = "# of Players from each College",
-          fill = "College")+
+          title = "# of Players from each College")+
     coord_flip()+
-    theme(
+    scale_fill_manual(values = c("black",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold"
+                                 ))+
+  theme(
         legend.position = "none"
-    )
+            )+
+    theme_bw()
+
 
 ```
 
 
 Looking at this graph you can see that the University of Missouri and Missouri State University are far and away leading the total with 9 players each. 
+
+
+## Salary by Year
+
+``` {r warning=FALSE, message=FALSE}
+
+
+salary_by_year <- MO_Player_college_data %>%
+  group_by(name_full, yearID.y) %>%
+  summarise(
+     salary = mean(salary)/1000000
+  )
+
+ggplot(data = salary_by_year)+
+    geom_point(mapping = aes(x = yearID.y, y = salary, color = name_full)) +
+    geom_line(mapping = aes(x = yearID.y, y = salary, color = name_full))+
+    labs(x = "College",
+         y = "Salary / 1 mil",
+         title = "Average Salary for Each Year by College")+
+    theme_bw()+
+  scale_colour_manual(values = c("University of Missouri Columbia" = "black",
+                                 "Crowder College" = "gold",
+                                 "Culver-Stockton College" = "gold",
+                                 "East Central College" = "gold",
+                                 "Jefferson College" = "gold",
+                                 "Longview Community College" = "gold",
+                                 "Maple Woods Community College" = "gold",
+                                 "Missouri State University" = "gold",
+                                 "Missouri Valley College" = "gold",
+                                 "Northwest Missouri State University" = "gold",
+                                 "Southeast Missouri State Universtiy" = "gold",
+                                 "St. Louis Community College, Forest Park Campus" = "gold",
+                                 "St. Louis Community College, Meramec Campus" = "gold",
+                                 "Three Rivers Community College" = "gold",
+                                 "Truman State University" = "gold",
+                                 "University of Central Missouri" = "gold"
+                                 ))+
+  
+  theme(
+    axis.text.x = element_blank(),
+    legend.position = "none")
+    
+    
+
+```
