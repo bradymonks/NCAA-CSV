@@ -142,76 +142,113 @@ Salary_by_college <- Single_player_college %>%
 Salary_by_college <- Salary_by_college[order(Salary_by_college$salary),]
 
 
-
 ggplot(data = Salary_by_college) +
-    geom_col(mapping = aes(x = reorder(name_full,salary), y = salary))+
+    geom_col(mapping = aes(x = reorder(name_full,salary), y = salary, fill = name_full))+
     theme_bw() +
     labs(x = "College",
          y = "Average Yearly Salary * 1 Mil",
-         title = "Average Yearly Salary by College")+
+         title = "Average Yearly Salary by College since 1985")+
     scale_y_continuous(label = function(x){return(paste("$",x))})+
     theme(
-      legend.position = "none"
+      legend.position = "none",
+      panel.grid.major.y = element_blank()
     )+
     coord_flip()+
-    scale_colour_manual(values = c("University of Missouri Columbia" = "black",
-                                 "Crowder College" = "gold",
-                                 "Culver-Stockton College" = "gold",
-                                 "East Central College" = "gold",
-                                 "Jefferson College" = "gold",
-                                 "Longview Community College" = "gold",
-                                 "Maple Woods Community College" = "gold",
-                                 "Missouri State University" = "gold",
-                                 "Missouri Valley College" = "gold",
-                                 "Northwest Missouri State University" = "gold",
-                                 "Southeast Missouri State Universtiy" = "gold",
-                                 "St. Louis Community College, Forest Park Campus" = "gold",
-                                 "St. Louis Community College, Meramec Campus" = "gold",
-                                 "Three Rivers Community College" = "gold",
-                                 "Truman State University" = "gold",
-                                 "University of Central Missouri" = "gold"
-                                 ))
+    scale_fill_manual(values = c("gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "black"))
 ```
 
 ![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
-I inflated the salaries using an inflation calculator online and from there, I averaged out everyone's salaries that went to school in MO so that each person has a average per year value. I then divided each salary by 1 million for simplicity purposes. Looking at the graph you can see that Maple Woods is far and away the leader. Knowing that Albert Pujols went there, I assumed that he was an outlier that caused this huge disparity and I was proven right by my next graph.
+I inflated the salaries using an inflation calculator online and from there, I averaged out everyone's salaries that went to school in MO so that each person has a average per year value. I then divided each salary by 1 million for simplicity purposes. Looking at the graph you can see that Maple Woods is far and away the leader. Knowing that Albert Pujols went there, I assumed that he was an outlier that caused this huge disparity and I was proven right by my next graph and by looking at the top paid players.Pujols appears in the top 25 multiple times and everyone else is from a college with a much bigger player population while Pujols comes from a college with only two players.
 
+
+```r
+topsalaries <- MO_Player_college_data %>%
+                select(nameFirst,nameLast,name_full,salary,yearID.y)
+
+topsalaries<- topsalaries[order(-topsalaries$salary),]
+head(topsalaries, 25)
+```
+
+```
+##     nameFirst nameLast                       name_full   salary yearID.y
+## 362      Ryan   Howard       Missouri State University 27500000     2014
+## 363      Ryan   Howard       Missouri State University 27500000     2015
+## 372      Ryan   Howard       Missouri State University 27500000     2014
+## 373      Ryan   Howard       Missouri State University 27500000     2015
+## 382      Ryan   Howard       Missouri State University 27500000     2014
+## 383      Ryan   Howard       Missouri State University 27500000     2015
+## 589    Albert   Pujols   Maple Woods Community College 27000000     2016
+## 588    Albert   Pujols   Maple Woods Community College 26400000     2015
+## 587    Albert   Pujols   Maple Woods Community College 25300000     2014
+## 617       Max Scherzer University of Missouri Columbia 23914286     2016
+## 625       Max Scherzer University of Missouri Columbia 23914286     2016
+## 633       Max Scherzer University of Missouri Columbia 23914286     2016
+## 359      Ryan   Howard       Missouri State University 23200000     2011
+## 369      Ryan   Howard       Missouri State University 23200000     2011
+## 379      Ryan   Howard       Missouri State University 23200000     2011
+## 358      Ryan   Howard       Missouri State University 22610000     2010
+## 368      Ryan   Howard       Missouri State University 22610000     2010
+## 378      Ryan   Howard       Missouri State University 22610000     2010
+## 360      Ryan   Howard       Missouri State University 22600000     2012
+## 370      Ryan   Howard       Missouri State University 22600000     2012
+## 380      Ryan   Howard       Missouri State University 22600000     2012
+## 361      Ryan   Howard       Missouri State University 22400000     2013
+## 371      Ryan   Howard       Missouri State University 22400000     2013
+## 381      Ryan   Howard       Missouri State University 22400000     2013
+## 121      Mark  Buehrle               Jefferson College 22000000     2015
+```
 
 ## # of Players from Each college
 
 
 ```r
 ggplot(data = Single_player_college)+
-    geom_bar(mapping = aes(x = name_full), position = 'dodge')+
+    geom_bar(mapping = aes(x = name_full, fill = name_full), position = 'dodge')+
     labs( x = "College",
           y = "Count",
-          title = "# of Players from each College")+
+          title = "# of Players from each College since 1985",
+          fill = "College")+
     coord_flip()+
-    scale_fill_manual(values = c("black",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold",
-                                 "gold"
-                                 ))+
-  theme(
-        legend.position = "none"
-            )+
-    theme_bw()
+    theme_bw()+
+    theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+    )+
+  scale_fill_manual(values = c("gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "darkgreen",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "black"))
 ```
 
-![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 
 Looking at this graph you can see that the University of Missouri and Missouri State University are far and away leading the total with 9 players each. 
@@ -232,7 +269,7 @@ ggplot(data = salary_by_year)+
     geom_line(mapping = aes(x = yearID.y, y = salary, color = name_full))+
     labs(x = "College",
          y = "Salary / 1 mil",
-         title = "Average Salary for Each Year by College")+
+         title = "Average Salary for Each Year by College Since 1985")+
     theme_bw()+
   scale_colour_manual(values = c("University of Missouri Columbia" = "black",
                                  "Crowder College" = "gold",
@@ -257,4 +294,62 @@ ggplot(data = salary_by_year)+
     legend.position = "none")
 ```
 
-![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+Looking at the graph you can see that the University of Missouri Columbia is actually fairly middle of the pack in terms of salary by year. Looking at the next graph, you can see that they have produced the most talent. They seem to have trouble producing the cream of the crop though. 
+
+
+```r
+ MO_Player_college_data_all <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      filter(state == "MO") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    
+    college_count <- MO_Player_college_data_all %>%
+          count(name_full, sort = TRUE)
+    
+   
+   
+    ggplot(data = college_count) +
+      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full))+
+      theme_bw() +
+      labs(x = "College",
+           y = "# of Players",
+           title = "Total # of Players from each College Since 1900")+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()+
+      scale_fill_manual(values = c("black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "gold",
+                                   "black",
+                                   "black",
+                                   "red"))
+```
+
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-5-1.png)<!-- -->

@@ -1,7 +1,6 @@
 library(tidyverse)
 library(Lahman)
 library(blscrapeR)
-library(directlabels)
 
 colleges <- Lahman::CollegePlaying
 
@@ -168,9 +167,28 @@ ggplot(data = Salary_by_college) +
          title = "Average Yearly Salary by College")+
     scale_y_continuous(label = function(x){return(paste("$",x))})+
     theme(
-      legend.position = "none"
+      legend.position = "none",
+      panel.grid.major.y = element_blank()
     )+
-    coord_flip()
+    coord_flip()+
+    scale_fill_manual(values = c("gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "gold",
+                                 "black"))
+    
+
 
 
 ggplot(data = Single_player_college)+
@@ -180,9 +198,28 @@ ggplot(data = Single_player_college)+
           title = "# of Players from each College",
           fill = "College")+
     coord_flip()+
+    theme_bw()+
     theme(
-        legend.position = "none"
-    )
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+    )+
+  scale_fill_manual(values = c("gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "gold",
+                               "black"))
+    
     
 
 MO_Player_college_data
@@ -231,5 +268,19 @@ ggplot(data = salary_by_year)+
     axis.text.x = element_blank(),
     legend.position = "none")
     
+
+
+
     
+    view(MO_Player_college_data)
+    
+    
+    MO_Player_college_data_all <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      filter(state == "MO") %>%
+      group_by(playerID, name_full) %>%
+      summarise(
+        count(name_full, sort = TRUE)
+      )
     
