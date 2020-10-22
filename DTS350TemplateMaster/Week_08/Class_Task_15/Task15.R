@@ -135,12 +135,18 @@ MO_Player_college_data <- colleges %>%
                 select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
                 na.omit()
 
+topsalaries<- MO_Player_college_data[order(-MO_Player_college_data$salary),]
+head(topsalaries, 25)
+
+topsalaries
+
 
 colnames(MO_Player_college_data)
 
 head(MO_Player_college_data)
 
 view(MO_Player_college_data)
+
 Single_player_college <- MO_Player_college_data %>%
                   group_by(nameFirst, nameLast, playerID, name_full, schoolID, city, state) %>%
                   summarise(
@@ -189,7 +195,7 @@ ggplot(data = Salary_by_college) +
                                  "black"))
     
 
-
+MO_Player_college_data
 
 ggplot(data = Single_player_college)+
     geom_bar(mapping = aes(x = name_full, fill = name_full), position = 'dodge')+
@@ -279,8 +285,319 @@ ggplot(data = salary_by_year)+
       left_join(schools, by = "schoolID") %>%
       left_join(playerinfo, by = "playerID") %>%
       filter(state == "MO") %>%
-      group_by(playerID, name_full) %>%
+      group_by( name_full, birthYear) %>%
       summarise(
-        count(name_full, sort = TRUE)
+        yob = mean(birthYear)) 
+    
+    
+    college_count <- MO_Player_college_data_all %>%
+          count(name_full, sort = TRUE)
+    
+   
+   
+    ggplot(data = college_count) +
+      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full))+
+      theme_bw() +
+      labs(x = "College",
+           y = "# of Players",
+           title = "Total Professional Players from each College Since 1900")+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()+
+      scale_fill_manual(values = c("black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "black",
+                                   "gold",
+                                   "black",
+                                   "black",
+                                   "red"))
+    
+    
+    
+    
+    
+    
+#### Texas
+    
+    TX_Player_college_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      filter(state == "TX") %>%
+      left_join(salary_data, by = "playerID") %>%
+      select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
+      na.omit()
+
+    
+    
+    TX_Single_player_college <- TX_Player_college_data %>%
+      group_by(nameFirst, nameLast, playerID, name_full, schoolID, city, state) %>%
+      summarise(
+        salary =  mean(salary)
       )
+
+    TX_salary_by_college <- TX_Single_player_college %>%
+      group_by(name_full, schoolID) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+    TX_salary_by_college <- TX_salary_by_college[order(TX_salary_by_college$salary),]
+    
+    
+    ggplot(data = TX_salary_by_college) +
+      geom_col(mapping = aes(x = reorder(name_full,salary), y = salary, fill = "black"))+
+      theme_bw() +
+      labs(x = "College",
+           y = "Average Yearly Salary * 1 Mil",
+           title = "Average Yearly Salary by College")+
+      scale_y_continuous(label = function(x){return(paste("$",x))})+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()
+    
+    top_TX_salary <- TX_Player_college_data %>%
+                filter(name_full == "Vernon College"|name_full=="Texarkana College"|name_full=="Texas A&M University-Kingsville")
+    
+    TX_count_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      filter(state == "TX", yearID >1984) %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    TX_college_count_1985 <- TX_count_data %>%
+      count(name_full, sort = TRUE)
+    view(TX_college_count_1985)
+    
+    ggplot(data = TX_Single_player_college)+
+      geom_bar(mapping = aes(x = name_full, fill = name_full), position = 'dodge')+
+      labs( x = "College",
+            y = "Count",
+            title = "# of Players from each College",
+            fill = "College")+
+      coord_flip()+
+      theme_bw()+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )
+    
+    All_Player_college_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      left_join(salary_data, by = "playerID") %>%
+      select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
+      na.omit()
+    
+    TX_salary_by_year <- TX_Player_college_data %>%
+      group_by(name_full, schoolID, yearID.y) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+  
+    
+    
+    
+    
+    
+    TX_Player_college_data_all <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      filter(state == "TX") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    
+    TX_college_count <- TX_Player_college_data_all %>%
+      count(name_full, sort = TRUE)
+    
+    
+    
+    ggplot(data = TX_college_count) +
+      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full))+
+      theme_bw() +
+      labs(x = "College",
+           y = "# of Players",
+           title = "Total Professional Players from each College Since 1900")+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()
+    
+### All U.S.
+    
+    
+    US_Player_college_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      left_join(salary_data, by = "playerID") %>%
+      select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
+      na.omit()
+    
+    
+    
+    US_Single_player_college <- US_Player_college_data %>%
+      group_by(nameFirst, nameLast, playerID, name_full, schoolID, city, state) %>%
+      summarise(
+        salary =  mean(salary)
+      )
+    
+    
+    US_salary_by_college <- US_Single_player_college %>%
+      group_by(name_full, schoolID,city,state) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+    US_salary_by_college <- US_salary_by_college[order(-US_salary_by_college$salary),]
+    
+    view(US_salary_by_college)
+    
+    Top_US_Salaries <- head(US_salary_by_college,20)
+    
+    
+    ggplot(data = Top_US_Salaries) +
+      geom_col(mapping = aes(x = reorder(name_full,salary), y = salary, fill = "black"))+
+      theme_bw() +
+      labs(x = "College",
+           y = "Average Yearly Salary * 1 Mil",
+           title = "Average Yearly Salary by College US")+
+      scale_y_continuous(label = function(x){return(paste("$",x))})+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()
+    
+    US_count_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    
+    US_college_count5 <- US_count_data %>%
+      count(name_full, sort = TRUE)
+    
+    total_US_Data <- US_college_count5 %>%
+            left_join(US_salary_by_college, by = "name_full")%>%
+            na.omit()
+    
+    total_US_Data
+    
+    total_US_30 <- total_US_Data %>%
+                filter(n > 29)
+    library(ggrepel)
+    
+    ggplot( data = total_US_30 ) +
+        geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
+        geom_label_repel(data = total_US_30)+
+        theme(
+            legend.position = "none"
+        )
+    
+    
+    US_count_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    US_college_count5 <- US_count_data %>%
+      count(name_full, sort = TRUE)
+    
+    view(US_college_count5)
+    
+    count_US_25 <- head( US_college_count5, 25)
+    
+    view(count_US_25)
+    
+    ggplot(data = count_US)+
+      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full), position = 'dodge')+
+      labs( x = "College",
+            y = "Count",
+            title = "# of Players from each College US",
+            fill = "College")+
+      coord_flip()+
+      theme_bw()+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )
+    
+    
+    All_Player_college_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      left_join(salary_data, by = "playerID") %>%
+      select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
+      na.omit()
+    
+    TX_salary_by_year <- TX_Player_college_data %>%
+      group_by(name_full, schoolID, yearID.y) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+    
+    
+    
+    
+    
+    
+    TX_Player_college_data_all <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      filter(state == "TX") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    
+    TX_college_count <- TX_Player_college_data_all %>%
+      count(name_full, sort = TRUE)
+    
+    
+    
+    ggplot(data = TX_college_count) +
+      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full))+
+      theme_bw() +
+      labs(x = "College",
+           y = "# of Players",
+           title = "Total Professional Players from each College Since 1900")+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()
+    
+    
     

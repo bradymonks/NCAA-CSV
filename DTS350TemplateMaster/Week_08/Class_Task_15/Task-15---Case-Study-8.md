@@ -353,3 +353,144 @@ Looking at the graph you can see that the University of Missouri Columbia is act
 ```
 
 ![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
+
+## US Data
+
+
+```r
+    US_Player_college_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      left_join(salary_data, by = "playerID") %>%
+      select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
+      na.omit()
+    
+    
+    
+    US_Single_player_college <- US_Player_college_data %>%
+      group_by(nameFirst, nameLast, playerID, name_full, schoolID, city, state) %>%
+      summarise(
+        salary =  mean(salary)
+      )
+    
+    
+    US_salary_by_college <- US_Single_player_college %>%
+      group_by(name_full, schoolID,city,state) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+    US_salary_by_college <- US_salary_by_college[order(-US_salary_by_college$salary),]
+    
+    
+    
+    Top_US_Salaries <- head(US_salary_by_college,20)
+    
+    
+    ggplot(data = Top_US_Salaries) +
+      geom_col(mapping = aes(x = reorder(name_full,salary), y = salary, fill = "black"))+
+      theme_bw() +
+      labs(x = "College",
+           y = "Average Yearly Salary * 1 Mil",
+           title = "Average Yearly Salary by College US")+
+      scale_y_continuous(label = function(x){return(paste("$",x))})+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank()
+      )+
+      coord_flip()
+```
+
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
+```r
+    US_count_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    
+    US_college_count5 <- US_count_data %>%
+      count(name_full, sort = TRUE)
+    
+    total_US_Data <- US_college_count5 %>%
+            left_join(US_salary_by_college, by = "name_full")%>%
+            na.omit()
+    
+  
+    total_US_30 <- total_US_Data %>%
+                filter(n > 29)
+    library(ggrepel)
+    
+    ggplot( data = total_US_30 ) +
+        geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
+      geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1)+
+      theme_bw()+
+      theme(
+            legend.position = "none"
+        )+
+      labs(x="Salary",
+           y="Count",
+           title="Salary X Count")
+```
+
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-6-2.png)<!-- -->
+
+```r
+    total_US_4 <- total_US_Data %>%
+      filter(salary > 4)
+    
+    
+    ggplot( data = total_US_4 ) +
+      geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
+      geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1)+
+      theme_bw()+
+      theme(
+        legend.position = "none"
+      )+
+      labs(x="Salary",
+           y="Count",
+           title="Salary X Count")
+```
+
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-6-3.png)<!-- -->
+
+```r
+    US_count_data <- colleges %>%
+      left_join(schools, by = "schoolID") %>%
+      left_join(playerinfo, by = "playerID") %>%
+      group_by( name_full, birthYear) %>%
+      summarise(
+        yob = mean(birthYear)) 
+    
+    US_college_count5 <- US_count_data %>%
+      count(name_full, sort = TRUE)
+    
+    count_US_25 <- head( US_college_count5, 25)
+    
+
+    ggplot(count_US_25,aes(x = n, y = 1, label = rownames(count_US_25$name_full)))+
+      geom_point(color="red")+
+      geom_text_repel(
+        label = count_US_25$name_full,
+        nudge_y = 0.05,
+        direction = "x",
+        angle = 90,
+        vjust = 0,
+        segment.size = 0.2
+      )+
+      xlim(30,70)+
+      ylim(1,0.8)+
+      theme(axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            panel.grid = element_blank())+
+      labs(x = "Count",
+           title = "Total # of Players Professionally")
+```
+
+![](Task-15---Case-Study-8_files/figure-html/unnamed-chunk-6-4.png)<!-- -->
