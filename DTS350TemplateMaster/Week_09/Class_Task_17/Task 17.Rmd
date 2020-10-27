@@ -2,7 +2,10 @@
 title: "Task 17"
 author: "Brady Monks"
 date: "10/26/2020"
-output: html_document
+output: 
+  html_document:
+    keep_md: TRUE
+    code_folding: hide
 ---
 
 ```{r message=FALSE, warning=FALSE}
@@ -31,10 +34,6 @@ dfdta3 <- dfdta1 %>%
 
 view(dfdta3)
 
-## 6-month Returns
-
-ggplot(data = dfdta3)+
-  geom_point(mapping = aes(x = Year_end, y = value, color = variable))
 
 ## Final Table
 
