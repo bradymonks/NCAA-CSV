@@ -393,13 +393,13 @@ Looking at the graph you can see that the University of Missouri Columbia is act
             na.omit()
     
   
-    total_US_30 <- total_US_Data %>%
-                filter(n > 29)
+    total_US_45 <- total_US_Data %>%
+                filter(n > 44)
     library(ggrepel)
     
-    ggplot( data = total_US_30 ) +
+    ggplot( data = total_US_45 ) +
         geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
-      geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1)+
+      geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1, nudge_y = 1)+
       theme_bw()+
       theme(
             legend.position = "none"
@@ -409,11 +409,11 @@ Looking at the graph you can see that the University of Missouri Columbia is act
            title="Salary X Count")
     
     
-    total_US_4 <- total_US_Data %>%
-      filter(salary > 4)
+    total_US_6 <- total_US_Data %>%
+      filter(salary > 6)
     
     
-    ggplot( data = total_US_4 ) +
+    ggplot( data = total_US_6 ) +
       geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
       geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1)+
       theme_bw()+
@@ -457,4 +457,27 @@ Looking at the graph you can see that the University of Missouri Columbia is act
             panel.grid = element_blank())+
       labs(x = "Count",
            title = "Total # of Players Professionally")
+    
+    
+    US_salary_by_State <- US_Single_player_college %>%
+      group_by(state) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+    US_salary_by_State <- US_salary_by_State[order(-US_salary_by_State$salary),]
+
+    view(US_salary_by_State)
+        
+    ggplot(data = US_salary_by_State)+
+      geom_col(mapping = aes(x = reorder(state,salary), y = salary, fill = "lightblue"))+
+      coord_flip()+
+      theme_bw()+
+      labs(x = "Salary * 1 Mil",
+           y = "State",
+           title = "Salary by State College was Located In"
+           )+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank())
     

@@ -81,3 +81,4 @@ ggplot(data = dfdta3)+
 ggplot(data = dfdta3)+
   geom_point(mapping = aes(x = Year_end, y = value, color = variable))+
   scale_x_discrete(drop = FALSE)
+
