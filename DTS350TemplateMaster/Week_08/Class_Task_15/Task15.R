@@ -16,15 +16,7 @@ salaries <- Lahman::Salaries
 
 schools
 colleges
-view(salaries)
 
-
-
-colnames(colleges)
-colnames(schools)
-colnames(playerinfo)
-
-view(new_data1) 
 
 salaries1985 <- filter(salaries, yearID == "1985") %>%
                 mutate(salary = salary * 2.42)
@@ -546,11 +538,11 @@ ggplot(data = salary_by_year)+
     US_college_count5 <- US_count_data %>%
       count(name_full, sort = TRUE)
     
-    count_US_25 <- head( US_college_count5, 25)
+    count_US_15 <- head( US_college_count5, 15)
     
     
-    ggplot(data = count_US_25)+
-      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full), position = 'dodge')+
+    ggplot(data = count_US_15)+
+      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = "lightblue"), position = 'dodge')+
       labs( x = "College",
             y = "Count",
             title = "# of Players from each College US",
@@ -561,9 +553,8 @@ ggplot(data = salary_by_year)+
         legend.position = "none",
         panel.grid.major.y = element_blank()
       )
-    view(count_US_25)
     
-    ggplot(count_US_25,aes(x = n, y = 1, label = rownames(count_US_25$name_full)))+
+    ggplot(count_US_15,aes(x = n, y = 1, label = rownames(count_US_25$name_full)))+
       geom_point(color="red")+
       geom_text_repel(
         label = count_US_25$name_full,
@@ -582,4 +573,31 @@ ggplot(data = salary_by_year)+
             panel.grid = element_blank())+
       labs(x = "Count",
            title = "Total # of Players Professionally")
+    
+    
+    ## By state
+    
+    US_salary_by_State <- US_Single_player_college %>%
+      group_by(state) %>%
+      summarise(
+        salary = mean(salary)/1000000
+      )
+    
+    US_salary_by_State <- US_salary_by_State[order(-US_salary_by_State$salary),]
+
+    view(US_salary_by_State)
+        
+    ggplot(data = US_salary_by_State)+
+      geom_col(mapping = aes(x = reorder(state,salary), y = salary, fill = "lightblue"))+
+      coord_flip()+
+      theme_bw()+
+      labs(x = "Salary * 1 Mil",
+           y = "State",
+           title = "Salary by State College was Located In"
+           )+
+      theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank())
+    
+   
     
