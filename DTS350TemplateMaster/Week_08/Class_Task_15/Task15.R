@@ -510,7 +510,7 @@ ggplot(data = salary_by_year)+
             left_join(US_salary_by_college, by = "name_full")%>%
             na.omit()
     
-    total_US_Data
+    view(total_US_Data)
     
     total_US_30 <- total_US_Data %>%
                 filter(n > 29)
@@ -518,10 +518,22 @@ ggplot(data = salary_by_year)+
     
     ggplot( data = total_US_30 ) +
         geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
-        geom_label_repel(data = total_US_30)+
-        theme(
+      geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1)+
+      theme(
             legend.position = "none"
         )
+    
+    
+    total_US_4 <- total_US_Data %>%
+      filter(salary > 4)
+    
+    
+    ggplot( data = total_US_4 ) +
+      geom_point(mapping = aes(x = salary, y = n, color = name_full ))+
+      geom_text_repel(mapping = aes(x=salary,y=n,label=name_full), force = 1)+
+      theme(
+        legend.position = "none"
+      )
     
     
     US_count_data <- colleges %>%
@@ -534,13 +546,10 @@ ggplot(data = salary_by_year)+
     US_college_count5 <- US_count_data %>%
       count(name_full, sort = TRUE)
     
-    view(US_college_count5)
-    
     count_US_25 <- head( US_college_count5, 25)
     
-    view(count_US_25)
     
-    ggplot(data = count_US)+
+    ggplot(data = count_US_25)+
       geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full), position = 'dodge')+
       labs( x = "College",
             y = "Count",
@@ -552,52 +561,25 @@ ggplot(data = salary_by_year)+
         legend.position = "none",
         panel.grid.major.y = element_blank()
       )
+    view(count_US_25)
     
-    
-    All_Player_college_data <- colleges %>%
-      left_join(schools, by = "schoolID") %>%
-      left_join(playerinfo, by = "playerID") %>%
-      left_join(salary_data, by = "playerID") %>%
-      select(nameFirst, nameLast, playerID, name_full, schoolID, city, state, salary, yearID.y)%>%
-      na.omit()
-    
-    TX_salary_by_year <- TX_Player_college_data %>%
-      group_by(name_full, schoolID, yearID.y) %>%
-      summarise(
-        salary = mean(salary)/1000000
-      )
-    
-    
-    
-    
-    
-    
-    
-    TX_Player_college_data_all <- colleges %>%
-      left_join(schools, by = "schoolID") %>%
-      left_join(playerinfo, by = "playerID") %>%
-      filter(state == "TX") %>%
-      group_by( name_full, birthYear) %>%
-      summarise(
-        yob = mean(birthYear)) 
-    
-    
-    TX_college_count <- TX_Player_college_data_all %>%
-      count(name_full, sort = TRUE)
-    
-    
-    
-    ggplot(data = TX_college_count) +
-      geom_col(mapping = aes(x = reorder(name_full,n), y = n, fill = name_full))+
-      theme_bw() +
-      labs(x = "College",
-           y = "# of Players",
-           title = "Total Professional Players from each College Since 1900")+
-      theme(
-        legend.position = "none",
-        panel.grid.major.y = element_blank()
+    ggplot(count_US_25,aes(x = n, y = 1, label = rownames(count_US_25$name_full)))+
+      geom_point(color="red")+
+      geom_text_repel(
+        label = count_US_25$name_full,
+        nudge_y = 0.05,
+        direction = "x",
+        angle = 90,
+        vjust = 0,
+        segment.size = 0.2
       )+
-      coord_flip()
-    
-    
+      xlim(30,70)+
+      ylim(1,0.8)+
+      theme(axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            panel.grid = element_blank())+
+      labs(x = "Count",
+           title = "Total # of Players Professionally")
     
