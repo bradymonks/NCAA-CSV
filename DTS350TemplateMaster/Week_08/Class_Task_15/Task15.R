@@ -554,10 +554,10 @@ ggplot(data = salary_by_year)+
         panel.grid.major.y = element_blank()
       )
     
-    ggplot(count_US_15,aes(x = n, y = 1, label = rownames(count_US_25$name_full)))+
+    ggplot(count_US_15,aes(x = n, y = 1, label = rownames(count_US_15$name_full)))+
       geom_point(color="red")+
       geom_text_repel(
-        label = count_US_25$name_full,
+        label = count_US_15$name_full,
         nudge_y = 0.05,
         direction = "x",
         angle = 90,
