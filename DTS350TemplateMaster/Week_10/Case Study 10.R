@@ -23,27 +23,48 @@ salesweekly$Time <- ceiling_date(salesweekly$Time,unit = "weeks", change_on_boun
 
 salesweekly
 
-salesweekly <- salesweekly %>%
+salesweeklyavg <- salesweekly %>%
   group_by(Name, Type, Time) %>%
   summarise(
       avg = mean(Amount)
   )
 
-salesweekly <- salesweekly %>%
+salesweeklyavg <- salesweeklyavg %>%
     separate(Time, c("Date", "Time"), sep = " ") %>%
     select(Name, Type, Date, avg)
 
-salesweekly
+salesweeklyavg$Date <- as.Date(salesweeklyavg$Date)
 
-salesweekly$Date <- as.Date(salesweekly$Date)
-
-ggplot(data = salesweekly) +
+ggplot(data = salesweeklyavg) +
   geom_point(mapping = aes(x = Date, y = avg, color = Name))+
   geom_line(mapping = aes(x = Date, y = avg, color = Name))+
   labs(y = "Average",
        title = "Weekly")
 
-## Daily
+## Sales Weekly Sum
+
+salesweeklysum <- salesweekly %>%
+  group_by(Name, Type, Time) %>%
+  summarise(
+    sum = sum(Amount)
+  )
+
+
+salesweeklysum <- salesweeklysum %>%
+  separate(Time, c("Date", "Time"), sep = " ") %>%
+  select(Name, Type, Date, sum)
+
+
+salesweeklysum$Date <- as.Date(salesweeklysum$Date)
+
+ggplot(data = salesweeklysum) +
+  geom_col(mapping = aes(x = Date, y = sum, fill = Name))+
+  labs(y = "Sum",
+       title = "Monthly")+
+  facet_wrap(~Name)
+
+
+## Daily Avg
 
 salesdaily <- sales
 
@@ -51,25 +72,51 @@ salesdaily$Time <- ceiling_date(salesdaily$Time,unit = "days", change_on_boundar
 
 salesdaily
 
-salesdaily <- salesdaily%>%
+salesdailyavg <- salesdaily%>%
   group_by(Name, Type, Time) %>%
   summarise(
     avg = mean(Amount)
   )
 
-salesdaily <- salesdaily %>%
+salesdailyavg <- salesdailyavg %>%
   separate(Time, c("Date", "Time"), sep = " ") %>%
   select(Name, Type, Date, avg)
 
-salesdaily
 
-salesdaily$Date <- as.Date(salesdaily$Date)
+salesdailyavg$Date <- as.Date(salesdailyavg$Date)
 
-ggplot(data = salesdaily) +
+ggplot(data = salesdailyavg) +
   geom_point(mapping = aes(x = Date, y = avg, color = Name))+
   geom_line(mapping = aes(x = Date, y = avg, color = Name))+
   labs(y = "Average",
        title = "Daily")
+
+## Daily Sum
+
+
+salesdailysum <- salesdaily %>%
+  group_by(Name, Type, Time) %>%
+  summarise(
+    sum = sum(Amount)
+  )
+
+
+salesdailysum <- salesdailysum %>%
+  separate(Time, c("Date", "Time"), sep = " ") %>%
+  select(Name, Type, Date, sum)
+
+
+salesdailysum$Date <- as.Date(salesdailysum$Date)
+
+ggplot(data = salesdailysum) +
+  geom_col(mapping = aes(x = Date, y = sum, fill = Name))+
+  labs(y = "Sum",
+       title = "Monthly")+
+  facet_wrap(~Name)
+
+ggplot(data = salesdailysum) +
+  geom_point(mapping = aes(x = Date, y = sum, color = Name))+
+  geom_line(mapping = aes(x = Date,y = sum, color = Name))
 
 ## Monthly
 
@@ -79,24 +126,43 @@ salesmonthly$Time <- ceiling_date(salesmonthly$Time,unit = "months", change_on_b
 
 salesmonthly
 
-salesmonthly <- salesmonthly %>%
+salesmonthlyavg <- salesmonthly %>%
   group_by(Name, Type, Time) %>%
   summarise(
     avg = mean(Amount)
   )
 
-salesmonthly <- salesmonthly %>%
+salesmonthlyavg <- salesmonthlyavg %>%
   separate(Time, c("Date", "Time"), sep = " ") %>%
   select(Name, Type, Date, avg)
 
-salesmonthly
 
-salesmonthly$Date <- as.Date(salesmonthly$Date)
+salesmonthlyavg$Date <- as.Date(salesmonthlyavg$Date)
 
-ggplot(data = salesmonthly) +
+ggplot(data = salesmonthlyavg) +
   geom_point(mapping = aes(x = Date, y = avg, color = Name))+
   geom_line(mapping = aes(x = Date, y = avg, color = Name))+
   labs(y = "Average",
        title = "Monthly")
 
+## Sales Monthly Sum
 
+salesmonthlysum <- salesmonthly %>%
+  group_by(Name, Type, Time) %>%
+  summarise(
+    sum = sum(Amount)
+  )
+  
+
+salesmonthlysum <- salesmonthlysum %>%
+  separate(Time, c("Date", "Time"), sep = " ") %>%
+  select(Name, Type, Date, sum)
+
+
+salesmonthlysum$Date <- as.Date(salesmonthlysum$Date)
+
+ggplot(data = salesmonthlysum) +
+  geom_col(mapping = aes(x = Date, y = sum, fill = Name))+
+  labs(y = "Sum",
+       title = "Monthly")+
+  facet_wrap(~Name)
