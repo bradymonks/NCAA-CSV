@@ -1,0 +1,52 @@
+---
+title: "Case Study 11"
+author: "Brady Monks"
+date: "11/10/2020"
+output: 
+  html_document:
+    keep_md: TRUE
+    code_folding: hide
+---
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(dygraphs)
+library(lubridate)
+library(timetk)
+library(tidyquant)
+
+
+tickers_today <- c("CXW", "F", "GM", "JCP", "KR", "WDC", "NKE","T", "WDAY", "WFC", "WMT")
+
+end <- today()-days(3)
+start <- end - years(5)
+
+
+stocks <- tq_get(tickers_today, get = "stock.prices", from = start, to = end)
+
+
+ggplot(stocks) +
+    geom_point(mapping = aes(x = date, y = volume, color = symbol))+
+  geom_line(mapping = aes(x = date, y = volume, color = symbol))+
+  facet_wrap(~symbol)
+
+stocks_months <- stocks %>%
+  group_by(symbol) %>%
+  tq_transmute( volume, mutate_fun = monthlyReturn)
+
+
+ggplot(stocks_months) +
+  geom_line( mapping = aes(x = date, y = monthly.returns, color = symbol))
+
+stocks_monthly <- stocks %>%
+  group_by(symbol) %>%
+  tq_transmute( adjusted, mutate_fun = monthlyReturn) %>%
+  pivot_wider(names_from = symbol, values_from = monthly.returns) %>%
+  tk_xts(date_var = date)
+
+dygraph(stocks_monthly, main = "Stock Prices - Monthly") %>%
+  dyOptions(colors = RColorBrewer::brewer.pal(3,"Set2"))%>%
+  dyRangeSelector()
+
+```
+
