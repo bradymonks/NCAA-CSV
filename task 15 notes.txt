@@ -1,9 +1,0 @@
-team meeting - task 15 
-1. adjusted the salaries for inlfation
-2. had some duplicates in the data 
-3. a bunch of graphs
-4. mizzou has a fairly average average salary in the majors 
-5. mizzou has produced the most pro players
-6. jewell has 1 player that's made it 
-7. made graphs for all states 
-8. 
