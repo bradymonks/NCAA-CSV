@@ -38,13 +38,12 @@ diff = pd.concat([old_df, new_df]).drop_duplicates(keep=False)
 print(diff)
 """
 
-"""
 ## Unique CSV
 
 import pandas as pd
 
 # read CSV file into DataFrame
-df = pd.read_csv('update.csv')
+df = pd.read_csv('update_split.csv')
 
 # convert 'College' column to string type
 df['College'] = df['College'].astype(str)
@@ -55,8 +54,8 @@ college_values = sorted(df['College'].unique())
 # write unique values to new CSV file
 pd.DataFrame(college_values, columns=['College']).to_csv('unique_colleges.csv', index=False)
 
-print("Unique colleges written to 'unique_colleges.csv'.")
-"""
+print("Unique colleges written to 'unique_colleges1.csv'.")
+
 """
 
 import pandas as pd
@@ -86,7 +85,8 @@ print("Updated CSV file with split colleges saved as 'update_split.csv'.")
 
 
 """
-
+"""
+# Merge csv files
 import pandas as pd
 
 # read update.csv file into DataFrame
@@ -102,3 +102,4 @@ df_merged = pd.merge(df_update, df_stadium, on='College', how='outer')
 df_merged.to_csv('merged.csv', index=False)
 
 print("Merged data written to 'merged.csv'.")
+"""
