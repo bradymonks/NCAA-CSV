@@ -57,20 +57,48 @@ pd.DataFrame(college_values, columns=['College']).to_csv('unique_colleges.csv', 
 
 print("Unique colleges written to 'unique_colleges.csv'.")
 """
+"""
+
+import pandas as pd
+
+# read 'update.csv' file into DataFrame
+df = pd.read_csv('update.csv')
+
+# split 'College' column into three columns at commas
+college_split = df['College'].str.split(',', expand=True)
+
+# rename the new columns
+college_split.columns = ['College1', 'College2', 'College3','College4']
+
+# fill missing values with 'NA'
+college_split = college_split.fillna('NA')
+
+# concatenate the original DataFrame and the new split columns
+df = pd.concat([df, college_split], axis=1)
+
+# drop the original 'College' column
+df = df.drop('College', axis=1)
+
+# save the updated DataFrame to a new CSV file
+df.to_csv('update_split.csv', index=False)
+
+print("Updated CSV file with split colleges saved as 'update_split.csv'.")
+
+
+"""
+
 import pandas as pd
 
 # read update.csv file into DataFrame
-df_update = pd.read_csv('update.csv')
+df_update = pd.read_csv('update_split.csv')
 
 # read stadium.csv file into DataFrame
 df_stadium = pd.read_csv('stadiums.csv')
 
 # merge the two DataFrames based on the 'College' column
-df_merged = pd.merge(df_update, df_stadium, on='college_name', how='inner')
+df_merged = pd.merge(df_update, df_stadium, on='College', how='outer')
 
 # write the merged DataFrame to a new CSV file
 df_merged.to_csv('merged.csv', index=False)
 
 print("Merged data written to 'merged.csv'.")
-
-
