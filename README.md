@@ -1,10 +1,7 @@
-# MonksB
-<<<<<<< HEAD
-<<<<<<< HEAD
-# This is a line from RStudio
-=======
-# I am a huge sports junkie as I almost always have ESPN on my tv.
-# I got interested into Data Science due to the AI element. 
->>>>>>> 60bf2ce346aab2fea212204cf0c85a632838ebb5
-=======
->>>>>>> 8ab439b3cdb42d042c3ea782433a44b26c65dd78
+# Brady Monks
+
+Dec 18, 2020
+
+# Overview 
+
+I like to think that my knowledge of sports, especially collegiate sports, is up there with the best of them. Part of that is knowing where a lot of professional athletes spent their collegiate careers. With this project, I wanted to dive into that, and see just where professional athletes are doing all their training before they reach the rank of professional
