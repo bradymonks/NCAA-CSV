@@ -488,8 +488,10 @@ with open('old_new_values.csv', 'w', newline='') as f:
     writer.writerow(['old_value', 'new_value', 'x'])
     writer.writerows(old_new_values)
 """
+""" RECALIBRATE AFTER ADJUSTING CITY NAMES
 import pandas as pd
 count = 0
+count1 = 0
 # read in the v7 file and create a dictionary from us_cities_merged.csv
 v7_df = pd.read_csv('goodtoplaywithv7.csv')
 city_dict = pd.read_csv('us_cities_merged.csv').set_index('Alias_Abbr')['City_State'].to_dict()
@@ -507,9 +509,66 @@ for i, birthplace in enumerate(v7_df['BirthPlace']):
     else:
         # if there is no match, add the value to the not_found_df dataframe
         not_found_df = not_found_df.append({'BirthPlace': birthplace}, ignore_index=True)
-
+        count1 += 
 # write the updated v7 dataframe and the not_found_df dataframe to separate CSV files
 v7_df.to_csv('updated_v8.csv', index=False)
 not_found_df.to_csv('not_found.csv', index=False)
 
 print(count)
+print(count1)
+"""
+""" maybe
+import pandas as pd
+from difflib import get_close_matches
+
+# read in the two files
+df1 = pd.read_csv('us_cities_mergedv2.csv')
+df2 = pd.read_csv('not_found_in_city_data.csv')
+
+# create a list of unique cities from the first file
+cities = list(set(df1['City_State'].tolist()))
+
+# define a function to find the closest match for a given city in the list of cities
+def find_match(city):
+    matches = get_close_matches(city, cities, n=1, cutoff=0.8)
+    if matches:
+        return matches[0]
+    else:
+        return city
+
+# apply the find_match function to the 'BirthPlace' column of the second file
+df2['BirthPlace'] = df2['BirthPlace'].apply(lambda x: find_match(x))
+
+# write the updated second file to a new csv
+df2.to_csv('updated_file2.csv', index=False)
+"""
+
+from fuzzywuzzy import fuzz
+import pandas as pd
+
+# read in both files
+df1 = pd.read_csv('us_cities_mergedv2.csv')
+df2 = pd.read_csv('not_found_in_city_data.csv')
+
+# iterate through each value in the 'BirthPlace' column of df2
+for i, birthplace in enumerate(df2['BirthPlace']):
+    # initialize the best match and its score
+    best_match = ''
+    best_score = 0
+    
+    # iterate through each value in the 'City_State' column of df1
+    for city_state in df1['City_State']:
+        # compare the strings and get the score
+        score = fuzz.token_sort_ratio(birthplace, city_state)
+        
+        # update the best match and its score if necessary
+        if score > best_score:
+            best_match = city_state
+            best_score = score
+    
+    # if the best score is above a certain threshold, update the value in df2
+    if best_score > 80:
+        df2.at[i, 'BirthPlace'] = best_match
+
+# write the updated df2 to a new file
+df2.to_csv('updated_file2.csv', index=False)
